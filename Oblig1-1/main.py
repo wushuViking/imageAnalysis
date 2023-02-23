@@ -31,25 +31,28 @@ def makeConnectedComponents(img):
                     connections[row, column] = connections[row - 1, column]
                 elif img[row - 1, column] == 0 and img[row, column - 1] == 0:
                     connections[row, column] = min(connections[row - 1, column], connections[row, column - 1])
-    for i in range(3):
-        for row in range(len(connections)):
-            for column in range(len(connections[row])):
-                if connections[row, column] != 0:
-                    if connections[row, column] != connections[row, column + 1] and connections[row, column + 1] != 0:
-                        conns[connections[row, column]] = min(conns[connections[row, column + 1]],
-                                                              conns[connections[row, column]])
-                    elif connections[row + 1, column] and connections[row, column] != connections[row + 1, column] and \
-                            connections[row + 1, column] != 0:
-                        conns[connections[row, column]] = min(conns[connections[row + 1, column]],
-                                                              conns[connections[row, column]])
-                    elif connections[row - 1, column] and connections[row, column] != connections[row - 1, column] and \
-                            connections[row - 1, column] != 0:
-                        conns[connections[row, column]] = min(conns[connections[row - 1, column]],
-                                                              conns[connections[row, column]])
-                    elif connections[row, column - 1] and connections[row, column] != connections[row, column - 1] and \
-                            connections[row, column - 1] != 0:
-                        conns[connections[row, column]] = min(conns[connections[row, column - 1]],
-                                                              conns[connections[row, column]])
+                    if connections[row-1, column] != connections[row, column]:
+                        conns[connections[row-1, column]] = conns[connections[row,column]]
+
+
+    for row in range(len(connections)):
+        for column in range(len(connections[row])):
+            if connections[row, column] != 0:
+                if connections[row, column] != connections[row, column + 1] and connections[row, column + 1] != 0:
+                    conns[connections[row, column]] = min(conns[connections[row, column + 1]],
+                                                          conns[connections[row, column]])
+                elif connections[row + 1, column] and connections[row, column] != connections[row + 1, column] and \
+                        connections[row + 1, column] != 0:
+                    conns[connections[row, column]] = min(conns[connections[row + 1, column]],
+                                                          conns[connections[row, column]])
+                elif connections[row - 1, column] and connections[row, column] != connections[row - 1, column] and \
+                        connections[row - 1, column] != 0:
+                    conns[connections[row, column]] = min(conns[connections[row - 1, column]],
+                                                          conns[connections[row, column]])
+                elif connections[row, column - 1] and connections[row, column] != connections[row, column - 1] and \
+                        connections[row, column - 1] != 0:
+                    conns[connections[row, column]] = min(conns[connections[row, column - 1]],
+                                                          conns[connections[row, column]])
 
     for row in range(len(connections)):
         for column in range(len(connections[row])):
@@ -146,7 +149,7 @@ img = loadImage('cc_input.png')
 
 cons = makeConnectedComponents(img)
 unique, cons = cleanImg(cons)
-#cons = getBoundingBoxes(cons)
+cons = getBoundingBoxes(cons)
 cons = colorizeImage(cons, unique)
 saveShowImage(cons)
 
